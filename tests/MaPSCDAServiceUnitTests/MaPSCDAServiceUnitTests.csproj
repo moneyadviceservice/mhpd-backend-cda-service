@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\app\MaPSCDAService\MaPSCDAService\MaPSCDAService.csproj" />
+    <ProjectReference Include="..\..\app\MaPSCDAService\MaPSCDAService.csproj" />
   </ItemGroup>
 
 </Project>

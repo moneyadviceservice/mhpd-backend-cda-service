@@ -5,7 +5,7 @@ VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MaPSCDAService", "MaPSCDAService\MaPSCDAService.csproj", "{86E42C8F-816F-41CF-975A-EFF6DCA366FD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MaPSCDAServiceUnitTests", "..\..\tests\MaPSCDAServiceUnitTests\MaPSCDAServiceUnitTests.csproj", "{200E0C42-9D39-41A2-BFA7-2238B99DE09A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaPSCDAServiceUnitTests", "..\tests\MaPSCDAServiceUnitTests\MaPSCDAServiceUnitTests.csproj", "{A61D3696-0767-282A-C707-9FFBC36FD544}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{86E42C8F-816F-41CF-975A-EFF6DCA366FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86E42C8F-816F-41CF-975A-EFF6DCA366FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86E42C8F-816F-41CF-975A-EFF6DCA366FD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{200E0C42-9D39-41A2-BFA7-2238B99DE09A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{200E0C42-9D39-41A2-BFA7-2238B99DE09A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{200E0C42-9D39-41A2-BFA7-2238B99DE09A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{200E0C42-9D39-41A2-BFA7-2238B99DE09A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A61D3696-0767-282A-C707-9FFBC36FD544}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A61D3696-0767-282A-C707-9FFBC36FD544}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A61D3696-0767-282A-C707-9FFBC36FD544}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A61D3696-0767-282A-C707-9FFBC36FD544}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
