@@ -22,6 +22,7 @@ builder.Services.AddMhpdCosmosDb();
 builder.Services.AddMhpdHttpClients();
 builder.Services.AddIntegrationServices();
 builder.Services.AddControllers();
+builder.Services.AddAntiForgeryValidation();
 builder.Services.AddTransient<IPkceGenerator, PkceGenerator>();
 builder.Services.AddHttpLogging(logging =>
 {
@@ -52,7 +53,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.UseHttpLogging();
-app.Run();
+app.UseCsrfTokenEndpoint();
+await app.RunAsync();
 
 [ExcludeFromCodeCoverage]
-public partial class Program { }
+public static partial class Program { }

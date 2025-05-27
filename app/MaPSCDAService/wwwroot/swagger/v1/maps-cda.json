@@ -149,7 +149,7 @@
         "type": "object",
         "properties": {
           "redirectTargetUrl": {
-            "pattern": "^https?:\\/\\/([a-zA-Z0-9\\-]+\\.)+[a-zA-Z]{2,}(:\\d{1,5})?(\\/[^\\s]*)?$",
+            "pattern": "^https?:\\/\\/((localhost)|([a-zA-Z0-9\\-]+\\.)+[a-zA-Z]{2,})(:\\d{1,5})?(\\/[^\\s]*)?$",
             "type": "string",
             "nullable": true
           },
