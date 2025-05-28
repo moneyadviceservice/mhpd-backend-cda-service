@@ -38,6 +38,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SchemaFilter<ConstSchemaFilter>();
+    c.DocumentFilter<CsrfEndpointFilter>();
     c.AddServer(new OpenApiServer
     {
         Url = builder.Configuration.GetValue<string>("OpenApiServerUrl") ?? "https:\\localhost:3000"
