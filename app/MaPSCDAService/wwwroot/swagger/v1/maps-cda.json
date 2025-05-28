@@ -4,6 +4,11 @@
     "title": "MaPSCDAService, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "version": "1.0"
   },
+  "servers": [
+    {
+      "url": "https://maps-api-management-dev.azure-api.net/maps-cda-service/"
+    }
+  ],
   "paths": {
     "/claims-gathering-redirect": {
       "get": {
@@ -149,7 +154,7 @@
         "type": "object",
         "properties": {
           "redirectTargetUrl": {
-            "pattern": "^https?:\\/\\/([a-zA-Z0-9\\-]+\\.)+[a-zA-Z]{2,}(:\\d{1,5})?(\\/[^\\s]*)?$",
+            "pattern": "^https?:\\/\\/((localhost)|([a-zA-Z0-9\\-]+\\.)+[a-zA-Z]{2,})(:\\d{1,5})?(\\/[^\\s]*)?$",
             "type": "string",
             "nullable": true
           },
