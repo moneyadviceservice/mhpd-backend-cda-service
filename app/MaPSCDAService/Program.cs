@@ -7,6 +7,7 @@ using MhpdCommon.Models.MHPDModels;
 using MhpdCommon.Models.OpenApi;
 using MhpdCommon.Repository;
 using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +35,14 @@ builder.Services.AddHttpLogging(logging =>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c => c.SchemaFilter<ConstSchemaFilter>());
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SchemaFilter<ConstSchemaFilter>();
+    c.AddServer(new OpenApiServer
+    {
+        Url = builder.Configuration.GetValue<string>("OpenApiServerUrl") ?? "https:\\localhost:3000"
+    });
+});
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 builder.Services.AddScoped<ICosmosDbRepository<UserSessionData>, UserSessionDataRepository>();
