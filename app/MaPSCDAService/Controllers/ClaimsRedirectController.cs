@@ -24,7 +24,7 @@ public class ClaimsRedirectController(ILogger<ClaimsRedirectController> logger,
     [Route("claims-gathering-redirect")]
     public async Task<IActionResult> GetRedirectAsync([FromHeader] RequestHeaderModel request)
     {
-        logger.LogRequest(request);
+        logger.LogRequestReceived(request);
 
         if (!TryValidateRequestHeader(request, out var validationMessage))
         {
@@ -69,7 +69,7 @@ public class ClaimsRedirectController(ILogger<ClaimsRedirectController> logger,
             Ticket = tokenResponse.UserRedirectDetails.Ticket
         };
 
-        logger.LogResponse(response);
+        logger.LogResponseSent(response);
 
         return Ok(response);
     }
