@@ -31,10 +31,10 @@ public class MapsCdaServiceController(IOptions<UriSettings> uriSettings,
         }
 
         using var scope = logger.BeginCorrelationScope(headerModel.CorrelationId!, $"{Constants.LogSource} Rqp");
-        logger.LogRequest(headerModel);
+        logger.LogRequestReceived(headerModel);
         
         var response = new RqpResponseModel { Rqp = GetToken(headerModel.UserSessionId, headerModel.Iss) };
-        logger.LogResponse(response);
+        logger.LogResponseSent(response);
 
         return Ok(response);
     }
@@ -52,10 +52,10 @@ public class MapsCdaServiceController(IOptions<UriSettings> uriSettings,
         }
 
         using var scope = logger.BeginCorrelationScope(headerModel.CorrelationId!, $"{ Constants.LogSource} Redirect");
-        logger.LogRequest(headerModel);
+        logger.LogRequestReceived(headerModel);
         
         var response = CreateRedirectResponse(headerModel);
-        logger.LogResponse(response);
+        logger.LogResponseSent(response);
 
         return Ok(response);
     }
