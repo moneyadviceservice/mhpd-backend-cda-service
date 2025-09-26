@@ -75,6 +75,7 @@ dotnet restore
   "AllowedHosts": "*",
   "TokenIntegrationServiceUrl": "$(TokenIntegrationServiceEndpoint)",
   "PeiIntegrationServiceUrl": "$(PeiIntegrationServiceEndpoint)",
+  "OpenApiServerUrl": "$(OpenApiServerUrl)",
   "JwtSettings": {
     "PrivateKey": "$(maps_cda_service_private_key)",
     "ExpiryInSeconds": "$(maps_cda_service_expiry)",
@@ -117,19 +118,6 @@ dotnet test
 ## Logging
 Logging is configured to capture detailed information about requests and errors. Logs are written using the ILogger interface, providing insights into the operation of the service
 
-## Pipelines
-- infrastructure-deploy.yml
-  - Terraform infrastructure for the function apps and app services
-  - Pipeline name is 'MHPD-backend-infrastructure'
-- cda-app-service-deploy.yml
-  - Deploy .NET App to CDA-service-<env>
-  - Pipeline name is 'MHPD CDA Service App Service Deploy'
-- cda-service-api-publish.yml
-  - Exports the API spec to api-docs repo and bumps the version of the APIm resource
-  - Pipeline name is 'CDA Service - Publish API Spec'
-- ci.yml
-  - Builds and tests the project
-  - Pipeline name is 'mhpd-backend-cda-service-ci'
 
 ## Contributing
 Submit a pull request or open an issue for any enhancements or bug fixes.
