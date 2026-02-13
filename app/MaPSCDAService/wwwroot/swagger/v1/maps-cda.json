@@ -172,12 +172,10 @@
         "type": "object",
         "properties": {
           "redirectTargetUrl": {
-            "pattern": "^https?:\\/\\/((localhost)|([a-zA-Z0-9\\-]+\\.)+[a-zA-Z]{2,})(:\\d{1,5})?(\\/[^\\s]*)?$",
             "type": "string",
             "nullable": true
           },
           "rqp": {
-            "pattern": "^[A-Za-z0-9\\-_]+(\\.[A-Za-z0-9\\-_]+){2}$",
             "type": "string",
             "nullable": true
           },
@@ -226,7 +224,6 @@
             "nullable": true
           },
           "requestId": {
-            "pattern": "^[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}$",
             "type": "string",
             "nullable": true
           }
@@ -242,7 +239,6 @@
         "properties": {
           "userSessionId": {
             "minLength": 1,
-            "pattern": "^[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}$",
             "type": "string"
           },
           "iss": {
@@ -253,7 +249,6 @@
           "correlationId": {
             "maxLength": 36,
             "minLength": 0,
-            "pattern": "^[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}$",
             "type": "string",
             "nullable": true
           }

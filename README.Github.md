@@ -130,3 +130,7 @@ Submit a pull request or open an issue for any enhancements or bug fixes.
 ### 🔧 Release 0.5.0 — 2025-09-08
 - Applied industry standard security response headers.
 - Updated logging output consistency to improve traceability.
+
+### 🔧 Release 0.9.0 — 2026-02-12
+- Service to communicate with internal services
+- Service network rules changed to allow traffic from other apps on the vnet
