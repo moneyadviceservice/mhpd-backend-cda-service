@@ -2,7 +2,6 @@
 using MaPSCDAService.Models;
 using MaPSCDAService.Utils;
 using MhpdCommon.Extensions;
-using MhpdCommon.Models.MessageBodyModels;
 using MhpdCommon.Models.MHPDModels;
 using MhpdCommon.Models.RequestHeaderModel;
 using MhpdCommon.Utils;
@@ -19,10 +18,9 @@ public class MapsCdaServiceController(IOptions<UriSettings> uriSettings,
     ITokenUtility tokenUtility,
     IIdValidator idValidator) : ControllerBase
 {
-    [HttpGet("rqp")]
-    [ProducesResponseType(typeof(RqpResponseModel), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public IActionResult PostRqp([FromHeader] RequestHeaderModel headerModel)
+    [HttpGet]
+    [Route("rqp")]
+    public async Task<IActionResult> PostRqpAsync([FromHeader] RequestHeaderModel headerModel)
     {
         if (!TryValidateRequest(headerModel, out var message))
         {
@@ -39,11 +37,9 @@ public class MapsCdaServiceController(IOptions<UriSettings> uriSettings,
         return Ok(response);
     }
 
-    [Route("redirect-details")]
     [HttpPost]
-    [ProducesResponseType(typeof(RedirectResponseModel), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public IActionResult RedirectDetails([FromHeader] RequestHeaderModel headerModel)
+    [Route("redirect-details")]
+    public async Task<IActionResult> RedirectDetailsAsync([FromHeader] RequestHeaderModel headerModel)
     {
         if (!TryValidateRequest(headerModel, out var message))
         {

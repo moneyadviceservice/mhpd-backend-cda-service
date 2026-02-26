@@ -44,7 +44,7 @@ public class MapsCdaServiceControllerTests
     }
 
     [Fact]
-    public void PostRqp_ValidRequest_ReturnsOkResponse()
+    public async Task PostRqpAsync_ValidRequest_ReturnsOkResponse()
     {
         // Arrange
         var header = new RequestHeaderModel { Iss = "issuer", UserSessionId = Guid.NewGuid().ToString(), CorrelationId = Guid.NewGuid().ToString() };
@@ -54,7 +54,7 @@ public class MapsCdaServiceControllerTests
         _mockTokenUtility.Setup(t => t.GenerateJwt(It.IsAny<CustomClaimDataModel>())).Returns("mocked_token");
 
         // Act
-        var result = _controller.PostRqp(header);
+        var result = await _controller.PostRqpAsync(header);
 
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
@@ -63,13 +63,13 @@ public class MapsCdaServiceControllerTests
     }
 
     [Fact]
-    public void PostRqp_InvalidRequest_MissingIss_ReturnsBadRequest()
+    public async Task PostRqpAsync_InvalidRequest_MissingIss_ReturnsBadRequest()
     {
         // Arrange
         var header = new RequestHeaderModel { Iss = "", UserSessionId = Guid.NewGuid().ToString(), CorrelationId = Guid.NewGuid().ToString() };
         
         // Act
-        var result = _controller.PostRqp(header);
+        var result = await _controller.PostRqpAsync(header);
 
         // Assert
         var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
@@ -78,14 +78,14 @@ public class MapsCdaServiceControllerTests
     
 
     [Fact]
-    public void PostRqp_InvalidRequest_InvalidUserSessionId_ReturnsBadRequest()
+    public async Task PostRqpAsync_InvalidRequest_InvalidUserSessionId_ReturnsBadRequest()
     {
         // Arrange
         var header = new RequestHeaderModel { Iss = "issuer", UserSessionId = "invalid_guid", CorrelationId = Guid.NewGuid().ToString() };
         _mockIdValidator.Setup(v => v.IsValidGuid(header.CorrelationId)).Returns(true);
 
         // Act
-        var result = _controller.PostRqp(header);
+        var result = await _controller.PostRqpAsync(header);
 
         // Assert
         var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
@@ -93,7 +93,7 @@ public class MapsCdaServiceControllerTests
     }
     
     [Fact]
-    public void PostRqp_InvalidRequest_InvalidCorrelationId_ReturnsBadRequest()
+    public async Task PostRqpAsync_InvalidRequest_InvalidCorrelationId_ReturnsBadRequest()
     {
         // Arrange
         var header = new RequestHeaderModel { CorrelationId = "invalid_guid", UserSessionId = Guid.NewGuid().ToString(), Iss = "issuer" };
@@ -101,7 +101,7 @@ public class MapsCdaServiceControllerTests
         _mockIdValidator.Setup(v => v.IsValidGuid(header.UserSessionId)).Returns(true);
 
         // Act
-        var result = _controller.PostRqp(header);
+        var result = await _controller.PostRqpAsync(header);
 
         // Assert
         var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
@@ -109,7 +109,7 @@ public class MapsCdaServiceControllerTests
     }
 
     [Fact]
-    public void RedirectDetails_ValidRequest_ReturnsOkResponse()
+    public async Task RedirectDetailsAsync_ValidRequest_ReturnsOkResponse()
     {
         // Arrange
         var header = new RequestHeaderModel { CorrelationId = Guid.NewGuid().ToString(), Iss = "issuer", UserSessionId = Guid.NewGuid().ToString() };
@@ -120,7 +120,7 @@ public class MapsCdaServiceControllerTests
         _mockPkceGenerator.Setup(p => p.GeneratePkce()).Returns((codeVerifier: "mocked_verifier", codeChallenge: "mocked_challenge"));
 
         // Act
-        var result = _controller.RedirectDetails(header);
+        var result = await _controller.RedirectDetailsAsync(header);
 
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);

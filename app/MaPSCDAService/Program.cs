@@ -7,7 +7,7 @@ using MhpdCommon.Models.MHPDModels;
 using MhpdCommon.Models.OpenApi;
 using MhpdCommon.Repository;
 using Microsoft.AspNetCore.HttpLogging;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,8 +16,11 @@ builder.Services.AddOptions<UriSettings>()
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
-// Add services to the container.
-builder.Services.AddApplicationInsightsTelemetry();
+if (builder.Configuration.GetValue<string>("ApplicationInsights:ConnectionString") != "$(AppInsightsConnString)")
+{
+    builder.Services.AddApplicationInsightsTelemetry();
+}
+
 builder.Services.AddMhpdUtilities();
 builder.Services.AddMhpdCosmosDb();
 builder.Services.AddMhpdHttpClients();
