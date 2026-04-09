@@ -16,10 +16,8 @@ builder.Services.AddOptions<UriSettings>()
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
-if (!string.IsNullOrEmpty(builder.Configuration.GetValue<string>("APPLICATIONINSIGHTS_CONNECTION_STRING")))
-{
-    builder.Services.AddApplicationInsightsTelemetry();
-}
+builder.Services.AddApplicationInsightsTelemetry();
+builder.Logging.AddMhpdTelemetry(builder.Configuration);
 
 builder.Services.AddMhpdUtilities();
 builder.Services.AddMhpdCosmosDb();
