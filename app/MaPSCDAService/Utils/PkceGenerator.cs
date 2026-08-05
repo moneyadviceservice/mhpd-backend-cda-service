@@ -11,11 +11,7 @@ public class PkceGenerator : IPkceGenerator
     {
         const int length = 96; // Maximum length is set so that the encoded size does not exceed 128 characters
         var randomBytes = new byte[length];
-
-        using (var rng = RandomNumberGenerator.Create())
-        {
-            rng.GetBytes(randomBytes);
-        }
+        RandomNumberGenerator.Fill(randomBytes);
 
         // Base64 URL encoding, without padding characters (RFC 7636 specification)
         var codeVerifier = Convert.ToBase64String(randomBytes)
@@ -24,15 +20,12 @@ public class PkceGenerator : IPkceGenerator
             .Replace("=", "");
 
         // Generate code challenge using SHA-256 hash of the code verifier
-        string codeChallenge;
-        using (SHA256.Create())
-        {
-            var challengeBytes = SHA256.HashData(Encoding.ASCII.GetBytes(codeVerifier));
-            codeChallenge = Convert.ToBase64String(challengeBytes)
-                .Replace("+", "-")
-                .Replace("/", "_")
-                .Replace("=", ""); // Base64 URL encoding, without padding characters
-        }
+        using var sha256 = SHA256.Create();
+        var challengeBytes = SHA256.HashData(Encoding.ASCII.GetBytes(codeVerifier));
+        var codeChallenge = Convert.ToBase64String(challengeBytes)
+            .Replace("+", "-")
+            .Replace("/", "_")
+            .Replace("=", ""); // Base64 URL encoding, without padding characters
 
         return (codeVerifier, codeChallenge);
     }

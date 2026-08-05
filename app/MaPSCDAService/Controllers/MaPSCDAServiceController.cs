@@ -27,12 +27,8 @@ public class MapsCdaServiceController(IOptions<UriSettings> uriSettings,
             logger.LogWarning("Invalid request: {Message}", message);
             return BadRequest(message);
         }
-
-        using var scope = logger.BeginCorrelationScope(headerModel.CorrelationId!, $"{Constants.LogSource} Rqp");
-        logger.LogRequestReceived(headerModel);
         
         var response = new RqpResponseModel { Rqp = GetToken(headerModel.UserSessionId, headerModel.Iss) };
-        logger.LogResponseSent(response);
 
         return Ok(response);
     }
@@ -47,9 +43,9 @@ public class MapsCdaServiceController(IOptions<UriSettings> uriSettings,
             return BadRequest(message);
         }
 
-        using var scope = logger.BeginCorrelationScope(headerModel.CorrelationId!, $"{ Constants.LogSource} Redirect");
+        using var scope = logger.BeginCorrelationScope(headerModel.CorrelationId!, $"{Constants.LogSource} Redirect");
         logger.LogRequestReceived(headerModel);
-        
+
         var response = CreateRedirectResponse(headerModel);
         logger.LogResponseSent(response);
 

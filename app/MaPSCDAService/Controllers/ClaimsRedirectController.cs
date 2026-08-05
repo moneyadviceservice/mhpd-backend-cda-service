@@ -18,7 +18,7 @@ public class ClaimsRedirectController(ILogger<ClaimsRedirectController> logger,
     ITokenUtility tokenUtility,
     IPeiServiceClient peiServiceClient,
     ITokenIntegrationServiceClient tokenIntegrationServiceClient,
-    ICosmosDbRepository<UserSessionData> sessionDataRepository) : ControllerBase
+    IHashRedisRepository<UserSessionData> sessionDataRepository) : ControllerBase
 {
     [HttpGet]
     [Route("claims-gathering-redirect")]
@@ -38,7 +38,7 @@ public class ClaimsRedirectController(ILogger<ClaimsRedirectController> logger,
             Issuer = request.Iss
         });
 
-        var sessionData = await sessionDataRepository.GetByIdAsync(request.UserSessionId!, request.UserSessionId!);
+        var sessionData = await sessionDataRepository.GetByUserSessionIdAsync(request.UserSessionId!);
         if(sessionData == null)
         {
             return GetServerErrorResponse(Constants.NoSessionDataFound);
@@ -98,7 +98,7 @@ public class ClaimsRedirectController(ILogger<ClaimsRedirectController> logger,
         {
             UserSessionId = request.UserSessionId!,
             Iss = request.Iss!,
-            PeisId = sessionData.PeisId!,
+            PeisId = sessionData.PeisId,
             CorrelationId = request.CorrelationId!
         });
     }

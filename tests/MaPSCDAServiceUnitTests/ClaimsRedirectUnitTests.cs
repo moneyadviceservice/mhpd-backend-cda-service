@@ -18,7 +18,7 @@ public class ClaimsRedirectUnitTests
     private readonly Mock<IIdValidator> _validator = new();
     private readonly Mock<ITokenUtility> _tokenUtility = new();
     private readonly Mock<IPeiServiceClient> _peiClient = new();
-    private readonly Mock<ICosmosDbRepository<UserSessionData>> _sessionRepository = new();
+    private readonly Mock<IHashRedisRepository<UserSessionData>> _sessionRepository = new();
     private readonly Mock<ITokenIntegrationServiceClient> _tokenClient = new();
     private readonly ClaimsRedirectController _controller;
 
@@ -31,7 +31,7 @@ public class ClaimsRedirectUnitTests
         _tokenUtility.Setup(mock => mock.GenerateJwt(It.IsAny<CustomClaimDataModel>())).Returns("rqp");
         _peiClient.Setup(mock => mock.GetPeiDataAsync(It.IsAny<PeiRequestModel>())).ReturnsAsync(GetPeiResponse());
         _tokenClient.Setup(mock => mock.PostAccessTokenAsync(It.IsAny<TokenClientRequestModel>(), It.IsAny<string>())).ReturnsAsync(GetTokenResponse());
-        _sessionRepository.Setup(mock => mock.GetByIdAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(GetSessionData());
+        _sessionRepository.Setup(mock => mock.GetByUserSessionIdAsync(It.IsAny<string>())).ReturnsAsync(GetSessionData());
 
         _controller = new ClaimsRedirectController(logger.Object, _validator.Object, _tokenUtility.Object, _peiClient.Object, _tokenClient.Object, _sessionRepository.Object);
     }
@@ -104,7 +104,7 @@ public class ClaimsRedirectUnitTests
         // Arrange
         var request = GetRequest();
 
-        _sessionRepository.Setup(mock => mock.GetByIdAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(GetSessionData(false));
+        _sessionRepository.Setup(mock => mock.GetByUserSessionIdAsync(It.IsAny<string>())).ReturnsAsync(GetSessionData(false));
 
         // Act
         var response = await _controller.GetRedirectAsync(request);

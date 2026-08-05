@@ -3,9 +3,7 @@ using MaPSCDAService.Configuration;
 using MaPSCDAService.Utils;
 using MhpdCommon.Extensions;
 using MhpdCommon.Models.Configuration;
-using MhpdCommon.Models.MHPDModels;
 using MhpdCommon.Models.OpenApi;
-using MhpdCommon.Repository;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.OpenApi;
 
@@ -20,7 +18,8 @@ builder.Services.AddApplicationInsightsTelemetry();
 builder.Logging.AddMhpdTelemetry(builder.Configuration);
 
 builder.Services.AddMhpdUtilities();
-builder.Services.AddMhpdCosmosDb();
+builder.Services.AddMhpdRedis(builder.Configuration);
+builder.Services.AddMhpdCosmosDb(builder.Configuration);
 builder.Services.AddMhpdHttpClients();
 builder.Services.AddIntegrationServices();
 builder.Services.AddControllers();
@@ -47,14 +46,13 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
-builder.Services.AddScoped<ICosmosDbRepository<UserSessionData>, UserSessionDataRepository>();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger(c => c.OpenApiVersion = Microsoft.OpenApi.OpenApiSpecVersion.OpenApi2_0);
+    app.UseSwagger(c => c.OpenApiVersion = OpenApiSpecVersion.OpenApi2_0);
     app.UseSwaggerUI();
 }
 
