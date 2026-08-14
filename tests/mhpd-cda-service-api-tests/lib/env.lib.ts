@@ -12,6 +12,7 @@ const envSchema = z.object({
   REDIRECT_URL: z.string(),
   CODE_VERIFIER: z.string(),
   CI: z.any().optional(),
+  USER_AGENT: z.string(),
 });
 
 type Env = z.infer<typeof envSchema>;
