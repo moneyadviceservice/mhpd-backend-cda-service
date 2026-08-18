@@ -30,3 +30,13 @@ variable "verbosity" {
   type    = string
   default = "verbose"
 }
+
+variable "hub_firewall_private_ip" {
+  type    = string
+  default = null
+}
+
+variable "apim_gateway_url" {
+  type    = string
+  default = null
+}

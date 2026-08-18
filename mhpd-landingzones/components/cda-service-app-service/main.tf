@@ -13,14 +13,14 @@ resource "azurerm_service_plan" "this" {
 }
 
 resource "azurerm_linux_web_app" "this" {
-  name                          = local.app_name
+  name                          = lower(local.app_name)
   resource_group_name           = local.resource_group_name
   location                      = azurerm_service_plan.this.location
   service_plan_id               = azurerm_service_plan.this.id
   app_settings                  = local.cda_service_app_settings
   client_affinity_enabled       = true
   https_only                    = true
-  public_network_access_enabled = true
+  public_network_access_enabled = false
   virtual_network_subnet_id     = local.enable_vnet_integration ? local.apps_subnet_id : null
   tags                          = {}
 
@@ -28,6 +28,12 @@ resource "azurerm_linux_web_app" "this" {
     name  = local.cosmos_db_connection_string.name
     type  = local.cosmos_db_connection_string.type
     value = local.cosmos_db_connection_string.value
+  }
+
+  connection_string {
+    name  = "RedisConnectionString"
+    type  = "Custom"
+    value = local.redis_connection_string
   }
 
   identity {
@@ -128,13 +134,19 @@ resource "azurerm_linux_web_app_slot" "staging" {
   # Slot is always in VNet + deny-all for prod — no need to vary by pe_enabled.
   client_affinity_enabled       = true
   https_only                    = true
-  public_network_access_enabled = true
+  public_network_access_enabled = false
   virtual_network_subnet_id     = local.apps_subnet_id
 
   connection_string {
     name  = local.cosmos_db_connection_string.name
     type  = local.cosmos_db_connection_string.type
     value = local.cosmos_db_connection_string.value
+  }
+
+  connection_string {
+    name  = "RedisConnectionString"
+    type  = "Custom"
+    value = local.redis_connection_string
   }
 
   identity {
@@ -169,8 +181,29 @@ resource "azurerm_linux_web_app_slot" "staging" {
   }
 }
 
+resource "azurerm_private_endpoint" "this" {
+  count               = local.pe_enabled ? 1 : 0
+  name                = "pe-${var.product}-cda-service-${var.env}-${local.loc}"
+  location            = var.location
+  resource_group_name = local.resource_group_name
+  subnet_id           = local.pe_subnet_id
+
+  private_service_connection {
+    name                           = "psc-${var.product}-cda-service-${var.env}-${local.loc}"
+    private_connection_resource_id = azurerm_linux_web_app.this.id
+    is_manual_connection           = false
+    subresource_names              = ["sites"]
+  }
+
+  lifecycle {
+    ignore_changes = [tags]
+  }
+
+  depends_on = [azurerm_linux_web_app.this]
+}
+
 resource "azurerm_application_insights" "this" {
-  name                = local.app_name
+  name                = lower(local.app_name)
   location            = var.location
   resource_group_name = local.resource_group_name
 
@@ -180,6 +213,33 @@ resource "azurerm_application_insights" "this" {
   workspace_id                          = local.logs_workspace_id
   retention_in_days                     = 90
   daily_data_cap_notifications_disabled = true
+
+  lifecycle {
+    ignore_changes = [tags]
+  }
+}
+
+
+resource "azurerm_private_dns_a_record" "app_service" {
+  count               = local.pe_enabled ? 1 : 0
+  name                = lower(local.app_name)
+  zone_name           = data.azurerm_private_dns_zone.app_service[0].name
+  resource_group_name = "rg-${var.product}-${var.env}-uksouth"
+  ttl                 = 300
+  records             = [azurerm_private_endpoint.this[0].private_service_connection[0].private_ip_address]
+
+  lifecycle {
+    ignore_changes = [tags]
+  }
+}
+
+resource "azurerm_private_dns_a_record" "app_service_scm" {
+  count               = local.pe_enabled ? 1 : 0
+  name                = lower("${local.app_name}.scm")
+  zone_name           = data.azurerm_private_dns_zone.app_service[0].name
+  resource_group_name = "rg-${var.product}-${var.env}-uksouth"
+  ttl                 = 300
+  records             = [azurerm_private_endpoint.this[0].private_service_connection[0].private_ip_address]
 
   lifecycle {
     ignore_changes = [tags]

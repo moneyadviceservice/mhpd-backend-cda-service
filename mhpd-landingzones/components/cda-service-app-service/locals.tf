@@ -22,6 +22,7 @@ locals {
   spoke_vnet_name = "vnet-mhpd-${var.env}-spoke-${var.location}"
   apps_subnet_id  = "/subscriptions/${var.subscription_id}/resourceGroups/${local.spoke_rg}/providers/Microsoft.Network/virtualNetworks/${local.spoke_vnet_name}/subnets/mhpd-apps"
   apim_subnet_id  = "/subscriptions/${var.subscription_id}/resourceGroups/${local.spoke_rg}/providers/Microsoft.Network/virtualNetworks/${local.spoke_vnet_name}/subnets/mhpd-apim"
+  pe_subnet_id    = "/subscriptions/${var.subscription_id}/resourceGroups/${local.spoke_rg}/providers/Microsoft.Network/virtualNetworks/${local.spoke_vnet_name}/subnets/mhpd-private-endpoints"
 
   enable_vnet_integration       = local.pe_enabled
   ip_restriction_default_action = local.pe_enabled ? "Deny" : "Allow"
@@ -32,6 +33,14 @@ locals {
       priority                  = 200
       action                    = "Allow"
       virtual_network_subnet_id = local.apim_subnet_id
+      ip_address                = null
+      headers                   = []
+    },
+    {
+      name                      = "mhpd-apps-allow"
+      priority                  = 210
+      action                    = "Allow"
+      virtual_network_subnet_id = local.apps_subnet_id
       ip_address                = null
       headers                   = []
     },
@@ -58,10 +67,12 @@ locals {
 
   apim_base_url = local.pe_enabled ? "https://apim-internal-mhpd-${var.env}-uks.azure-api.net" : "https://apim-mhpd-${var.env}-uks.azure-api.net"
 
+  redis_connection_string = "${data.azurerm_key_vault_secret.redis_endpoint.value}:10000,password=${data.azurerm_key_vault_secret.redis_primary_key.value},ssl=True,abortConnect=False"
+
   cda_service_app_settings = {
     "APPLICATIONINSIGHTS_CONNECTION_STRING"                 = azurerm_application_insights.this.connection_string
     "WEBSITE_ENABLE_SYNC_UPDATE_SITE"                       = "true"
-    "KeyVaultConfiguration__KeyVaultURL"                    = "https://kv-${var.product}-${var.env}-uks.vault.azure.net/"
+    "KeyVaultConfiguration__KeyVaultURL"                    = "https://kv-${var.product}-${var.env}-${local.loc}.vault.azure.net/"
     "UriSettings__RedirectTargetUrl"                        = var.env == "prod" ? "https://auth.find-your-pensions.service.gov.uk/ig/authorize" : "https://pdp-data-access-test-harness.netlify.app/"
     "JwtSettings__PrivateKey"                               = data.azurerm_key_vault_secret.cda_service_private_key.value
     "JwtSettings__ExpiryInSeconds"                          = 600

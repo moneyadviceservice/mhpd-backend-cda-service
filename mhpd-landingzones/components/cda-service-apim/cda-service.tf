@@ -5,7 +5,7 @@ resource "azurerm_api_management_api" "cda_service" {
   api_management_name   = data.azurerm_api_management.this.name
   revision              = "1"
   display_name          = "cda-service"
-  path                  = "cda-service"
+  path                  = "maps-cda-service"
   service_url           = local.cda_backend_url_uks
   protocols             = ["https"]
   subscription_required = false
