@@ -18,7 +18,7 @@ builder.Services.AddApplicationInsightsTelemetry();
 builder.Logging.AddMhpdTelemetry(builder.Configuration);
 
 builder.Services.AddMhpdUtilities();
-builder.Services.AddMhpdRedis(builder.Configuration);
+builder.Services.AddMhpdRedisWithDataProtectionStore(builder.Environment.ApplicationName, builder.Configuration);
 builder.Services.AddMhpdCosmosDb(builder.Configuration);
 builder.Services.AddMhpdHttpClients();
 builder.Services.AddIntegrationServices();
