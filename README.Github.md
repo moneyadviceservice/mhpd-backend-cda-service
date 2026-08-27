@@ -49,17 +49,20 @@ These dependencies are crucial for the functionality and operation of the MaPSCD
 To set up the MaPSCDAService locally, follow these steps:
 
 1. **Clone the Repository**:
+
 ```bash
    git clone https://github.com/moneyadviceservice/mhpd-backend-cda-service.git
    cd app
 ```
 
 2. **Restore Dependencies**:
+
 ```bash
 dotnet restore
 ```
 
 3. **Configure Application Settings**:
+
 ```bash
 {
   "Logging": {
@@ -98,45 +101,58 @@ dotnet restore
 ```
 
 4. **Build the Service**:
+
 ```bash
 dotnet build
 ```
 
 5. **Run the Service**:
+
 ```bash
 dotnet run
 ```
 
-
 ## Testing
+
 Unit tests are implemented to ensure the reliability of the service. To run the tests, navigate to the tests directory and execute:
+
 ```bash
 cd tests
 dotnet test
 ```
 
 ## Logging
+
 Logging is configured to capture detailed information about requests and errors. Logs are written using the ILogger interface, providing insights into the operation of the service
 
-
 ## Contributing
+
 Submit a pull request or open an issue for any enhancements or bug fixes.
 
 ## 📦 Release Notes
 
 ### 🔧 Release 0.3.0 — 2025-03-04
+
 - Added CSRF support .
 
 ### 🔧 Release 0.5.0 — 2025-09-08
+
 - Applied industry standard security response headers.
 - Updated logging output consistency to improve traceability.
 
 ### 🔧 Release 0.9.0 — 2026-02-12
+
 - Service to communicate with internal services
 - Service network rules changed to allow traffic from other apps on the vnet
 
 ### 🔧 Release 0.10.0 — 2026-03-25
+
 - Upgraded to .Net 10
 
 ### 🔧 Release 0.11.0 — 2026-04-15
+
 - Updated correlation logging for .Net 10.
+
+### 🔧 Release 1.3.0 — 2026-08-26
+
+- Moved session storage from Cosmos DB to Redis.
