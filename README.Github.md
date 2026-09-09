@@ -132,27 +132,24 @@ Submit a pull request or open an issue for any enhancements or bug fixes.
 ## 📦 Release Notes
 
 ### 🔧 Release 0.3.0 — 2025-03-04
-
 - Added CSRF support .
 
 ### 🔧 Release 0.5.0 — 2025-09-08
-
 - Applied industry standard security response headers.
 - Updated logging output consistency to improve traceability.
 
 ### 🔧 Release 0.9.0 — 2026-02-12
-
 - Service to communicate with internal services
 - Service network rules changed to allow traffic from other apps on the vnet
 
 ### 🔧 Release 0.10.0 — 2026-03-25
-
 - Upgraded to .Net 10
 
 ### 🔧 Release 0.11.0 — 2026-04-15
-
 - Updated correlation logging for .Net 10.
 
 ### 🔧 Release 1.3.0 — 2026-08-26
-
 - Moved session storage from Cosmos DB to Redis.
+
+### 🔧 Release 1.4.0 — 2026-09-09
+- Distributed Store for Data Protection Keys.
